@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+
+{% block title %}Documents - Legal RAG Assistant{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
+        <h2 class="card-title"><i class="fas fa-folder"></i> Document Management</h2>
+        <div>
+            <span class="status-indicator status-online" id="doc-stats">
+                <i class="fas fa-database"></i> 0 documents
+            </span>
+        </div>
+    </div>
+    <div class="card-body">
+        <div id="document-list">
+            <div style="text-align: center; padding: 2rem; color: #64748b;">
+                <i class="fas fa-folder-open" style="font-size: 3rem; margin-bottom: 1rem;"></i>
+                <p>No documents uploaded yet</p>
+                <a href="{{ url_for('upload') }}" class="btn btn-primary" style="margin-top: 1rem;">
+                    <i class="fas fa-upload"></i> Upload Documents
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card" style="margin-top: 1rem;">
+    <div class="card-header">
+        <h3 class="card-title">Database Information</h3>
+    </div>
+    <div class="card-body">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+            <div style="text-align: center; padding: 1rem; background: #f8fafc; border-radius: 0.5rem;">
+                <div style="font-size: 2rem; font-weight: bold; color: #3b82f6;" id="total-docs">0</div>
+                <div>Total Documents</div>
+            </div>
+            <div style="text-align: center; padding: 1rem; background: #f8fafc; border-radius: 0.5rem;">
+                <div style="font-size: 2rem; font-weight: bold; color: #10b981;" id="total-chunks">0</div>
+                <div>Vector Chunks</div>
+            </div>
+            <div style="text-align: center; padding: 1rem; background: #f8fafc; border-radius: 0.5rem;">
+                <div style="font-size: 2rem; font-weight: bold; color: #f59e0b;" id="db-status">Mock</div>
+                <div>Database Mode</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Mock document data
+    const mockDocuments = [
+        { id: 1, name: "contract_law.pdf", type: "pdf", size: "2.4 MB", uploaded: "2024-01-15", chunks: 12 },
+        { id: 2, name: "intellectual_property.docx", type: "docx", size: "1.8 MB", uploaded: "2024-01-14", chunks: 8 },
+        { id: 3, name: "case_study.txt", type: "txt", size: "0.5 MB", uploaded: "2024-01-13", chunks: 3 },
+        { id: 4, name: "regulations.md", type: "md", size: "0.3 MB", uploaded: "2024-01-12", chunks: 2 }
+    ];
+    
+    // Update stats
+    document.getElementById('total-docs').textContent = mockDocuments.length;
+    document.getElementById('total-chunks').textContent = mockDocuments.reduce((sum, doc) => sum + doc.chunks, 0);
+    document.getElementById('db-status').textContent = "Mock";
+    
+    // Display documents
+    if (mockDocuments.length > 0) {
+        let html = '<div class="document-list">';
+        
+        mockDocuments.forEach(doc => {
+            const icon = doc.type === 'pdf' ? 'fa-file-pdf text-red-500' :
+                        doc.type === 'docx' ? 'fa-file-word text-blue-500' :
+                        'fa-file-alt text-gray-500';
+            
+            html += `
+                <div class="document-item">
+                    <div class="document-info">
+                        <div class="document-title">
+                            <i class="fas ${icon}"></i> ${doc.name}
+                        </div>
+                        <div class="document-meta">
+                            <span>${doc.size} • Uploaded ${doc.uploaded} • ${doc.chunks} chunks</span>
+                        </div>
+                    </div>
+                    <div class="document-actions">
+                        <button class="btn btn-sm btn-secondary">
+                            <i class="fas fa-search"></i> View
+                        </button>
+                        <button class="btn btn-sm btn-danger">
+                            <i class="fas fa-trash"></i> Delete
+                        </button>
+                    </div>
+                </div>
+            `;
+        });
+        
+        html += '</div>';
+        document.getElementById('document-list').innerHTML = html;
+    }
+    
+    // Update header stats
+    document.getElementById('doc-stats').innerHTML = `
+        <i class="fas fa-database"></i> ${mockDocuments.length} documents, 
+        ${mockDocuments.reduce((sum, doc) => sum + doc.chunks, 0)} chunks
+    `;
+});
+</script>
+{% endblock %}

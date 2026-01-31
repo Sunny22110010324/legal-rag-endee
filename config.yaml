@@ -1,0 +1,26 @@
+app:
+  name: "Legal RAG Assistant"
+  version: "1.0.0"
+  debug: false
+
+database:
+  collection_name: "legal_documents"
+  vector_dimension: 1536
+  similarity_metric: "cosine"
+  max_results: 10
+
+embedding:
+  model: "text-embedding-3-small"
+  batch_size: 32
+  max_length: 8192
+
+rag:
+  chunk_size: 1000
+  chunk_overlap: 200
+  top_k: 5
+  score_threshold: 0.7
+
+web:
+  upload_folder: "./uploads"
+  allowed_extensions: ['.pdf', '.txt', '.docx', '.md']
+  max_file_size: 50

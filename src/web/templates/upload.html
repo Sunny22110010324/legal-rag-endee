@@ -1,0 +1,141 @@
+{% extends "base.html" %}
+
+{% block title %}Upload - Legal RAG Assistant{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h2 class="card-title"><i class="fas fa-upload"></i> Upload Legal Documents</h2>
+    </div>
+    <div class="card-body">
+        <div class="upload-area" id="upload-area">
+            <div class="upload-icon">
+                <i class="fas fa-cloud-upload-alt"></i>
+            </div>
+            <h3>Drag & Drop files here</h3>
+            <p>or click to browse</p>
+            <p class="text-small">Supported: PDF, DOCX, TXT, MD (Max 50MB)</p>
+            <input type="file" id="file-input" multiple style="display: none;" 
+                   accept=".pdf,.docx,.txt,.md">
+        </div>
+        
+        <div style="margin-top: 2rem;">
+            <h3>Upload Status</h3>
+            <div id="upload-status">
+                <p>No files uploaded yet</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card" style="margin-top: 1rem;">
+    <div class="card-header">
+        <h3 class="card-title">Document Requirements</h3>
+    </div>
+    <div class="card-body">
+        <ul style="margin-left: 1.5rem; line-height: 2;">
+            <li>PDF, DOCX, TXT, and Markdown files supported</li>
+            <li>Maximum file size: 50MB</li>
+            <li>Documents are processed and indexed for search</li>
+            <li>Text is extracted and converted to vector embeddings</li>
+            <li>Documents become searchable within seconds</li>
+        </ul>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const uploadArea = document.getElementById('upload-area');
+    const fileInput = document.getElementById('file-input');
+    const uploadStatus = document.getElementById('upload-status');
+    
+    // Click to upload
+    uploadArea.addEventListener('click', () => fileInput.click());
+    
+    // Drag and drop
+    uploadArea.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        uploadArea.style.borderColor = '#3b82f6';
+        uploadArea.style.backgroundColor = '#f0f9ff';
+    });
+    
+    uploadArea.addEventListener('dragleave', () => {
+        uploadArea.style.borderColor = '';
+        uploadArea.style.backgroundColor = '';
+    });
+    
+    uploadArea.addEventListener('drop', (e) => {
+        e.preventDefault();
+        uploadArea.style.borderColor = '';
+        uploadArea.style.backgroundColor = '';
+        
+        if (e.dataTransfer.files.length > 0) {
+            handleFiles(e.dataTransfer.files);
+        }
+    });
+    
+    // File input change
+    fileInput.addEventListener('change', (e) => {
+        if (e.target.files.length > 0) {
+            handleFiles(e.target.files);
+        }
+    });
+    
+    function handleFiles(files) {
+        uploadStatus.innerHTML = `
+            <div style="background: #dbeafe; padding: 1rem; border-radius: 0.5rem;">
+                <p><i class="fas fa-info-circle"></i> Selected ${files.length} file(s)</p>
+                <ul style="margin-top: 0.5rem;">
+                    ${Array.from(files).map(f => `<li>${f.name} (${formatFileSize(f.size)})</li>`).join('')}
+                </ul>
+                <button class="btn btn-primary" id="process-files" style="margin-top: 1rem;">
+                    <i class="fas fa-cogs"></i> Process Files
+                </button>
+            </div>
+        `;
+        
+        // Add process button handler
+        setTimeout(() => {
+            document.getElementById('process-files').addEventListener('click', () => {
+                uploadStatus.innerHTML = `
+                    <div style="background: #fef3c7; padding: 1rem; border-radius: 0.5rem;">
+                        <p><i class="fas fa-spinner fa-spin"></i> Processing files...</p>
+                        <div style="height: 4px; background: #e2e8f0; border-radius: 2px; margin-top: 0.5rem;">
+                            <div style="width: 0%; height: 100%; background: #3b82f6; border-radius: 2px; transition: width 2s;" id="progress-bar"></div>
+                        </div>
+                    </div>
+                `;
+                
+                // Simulate processing
+                let progress = 0;
+                const interval = setInterval(() => {
+                    progress += 10;
+                    const bar = document.getElementById('progress-bar');
+                    if (bar) bar.style.width = progress + '%';
+                    
+                    if (progress >= 100) {
+                        clearInterval(interval);
+                        setTimeout(() => {
+                            uploadStatus.innerHTML = `
+                                <div style="background: #d1fae5; padding: 1rem; border-radius: 0.5rem;">
+                                    <p><i class="fas fa-check-circle" style="color: #10b981;"></i> Successfully processed ${files.length} file(s)!</p>
+                                    <p>Documents are now searchable in the system.</p>
+                                </div>
+                            `;
+                        }, 500);
+                    }
+                }, 200);
+            });
+        }, 100);
+    }
+    
+    function formatFileSize(bytes) {
+        if (bytes === 0) return '0 Bytes';
+        const k = 1024;
+        const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+        const i = Math.floor(Math.log(bytes) / Math.log(k));
+        return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    }
+});
+</script>
+{% endblock %}

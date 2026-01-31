@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Legal RAG Assistant{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-balance-scale logo-icon"></i>
+                    <h1>Legal RAG Assistant</h1>
+                </div>
+                <nav class="nav-links">
+                    <a href="{{ url_for('index') }}" class="nav-link {% if request.path == '/' %}active{% endif %}">
+                        <i class="fas fa-home"></i> Home
+                    </a>
+                    <a href="{{ url_for('chat') }}" class="nav-link {% if request.path == '/chat' %}active{% endif %}">
+                        <i class="fas fa-comments"></i> Chat
+                    </a>
+                    <a href="{{ url_for('search') }}" class="nav-link {% if request.path == '/search' %}active{% endif %}">
+                        <i class="fas fa-search"></i> Search
+                    </a>
+                    <a href="{{ url_for('upload') }}" class="nav-link {% if request.path == '/upload' %}active{% endif %}">
+                        <i class="fas fa-upload"></i> Upload
+                    </a>
+                    <a href="{{ url_for('documents') }}" class="nav-link {% if request.path == '/documents' %}active{% endif %}">
+                        <i class="fas fa-folder"></i> Documents
+                    </a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="container">
+            {% block content %}{% endblock %}
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 Legal RAG Assistant - Endee Vector Database</p>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

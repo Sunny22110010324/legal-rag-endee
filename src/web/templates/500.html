@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}500 - Server Error{% endblock %}
+
+{% block content %}
+<div style="text-align: center; padding: 4rem 2rem;">
+    <i class="fas fa-exclamation-triangle" style="font-size: 4rem; color: #f59e0b; margin-bottom: 1rem;"></i>
+    <h1 style="font-size: 3rem; margin-bottom: 1rem;">500</h1>
+    <h2 style="margin-bottom: 1rem;">Server Error</h2>
+    <p style="margin-bottom: 2rem; color: #64748b;">
+        Something went wrong on our end. Please try again later.
+    </p>
+    <div style="display: flex; gap: 1rem; justify-content: center;">
+        <a href="{{ url_for('index') }}" class="btn btn-primary">
+            <i class="fas fa-home"></i> Return Home
+        </a>
+        <button onclick="location.reload()" class="btn btn-secondary">
+            <i class="fas fa-redo"></i> Reload Page
+        </button>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+
+{% block title %}Chat - Legal RAG Assistant{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h2 class="card-title"><i class="fas fa-comments"></i> Chat with Documents</h2>
+    </div>
+    <div class="card-body">
+        <div class="chat-container">
+            <div class="chat-messages" id="chat-messages">
+                <div class="message message-assistant">
+                    Hello! I'm your legal document assistant. Upload documents and ask me questions about them.
+                </div>
+            </div>
+            
+            <div class="chat-input-area">
+                <form class="chat-form" id="chat-form">
+                    <input type="text" class="chat-input" id="chat-input" 
+                           placeholder="Ask about your legal documents..." autocomplete="off">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-paper-plane"></i> Send
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card" style="margin-top: 1rem;">
+    <div class="card-header">
+        <h3 class="card-title">Example Questions</h3>
+    </div>
+    <div class="card-body">
+        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+            <button class="btn btn-sm btn-secondary example-question" data-question="What is contract law?">
+                What is contract law?
+            </button>
+            <button class="btn btn-sm btn-secondary example-question" data-question="Explain intellectual property rights">
+                Explain IP rights
+            </button>
+            <button class="btn btn-sm btn-secondary example-question" data-question="What are the key elements of a valid contract?">
+                Contract elements
+            </button>
+            <button class="btn btn-sm btn-secondary example-question" data-question="How does copyright protection work?">
+                Copyright protection
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const chatForm = document.getElementById('chat-form');
+    const chatInput = document.getElementById('chat-input');
+    const chatMessages = document.getElementById('chat-messages');
+    
+    // Example questions
+    document.querySelectorAll('.example-question').forEach(btn => {
+        btn.addEventListener('click', function() {
+            chatInput.value = this.dataset.question;
+            chatInput.focus();
+        });
+    });
+    
+    // Chat form submission
+    chatForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const message = chatInput.value.trim();
+        if (!message) return;
+        
+        // Add user message
+        addMessage(message, 'user');
+        chatInput.value = '';
+        
+        // Show loading
+        const loadingId = 'loading-' + Date.now();
+        chatMessages.innerHTML += `
+            <div id="${loadingId}" class="message message-assistant">
+                <i class="fas fa-spinner fa-spin"></i> Thinking...
+            </div>
+        `;
+        scrollToBottom();
+        
+        // Mock response (in real app, this would be an API call)
+        // Mock response (in real app, this would be an API call)
+    setTimeout(() => {
+        document.getElementById(loadingId).remove();
+        const responses = [
+            "Based on the legal documents in the system...",
+            "Contract law governs agreements between parties.",
+            "Intellectual property rights protect creations of the mind.",
+            "The key elements of a valid contract are: offer, acceptance, consideration, capacity, and legality.",
+            "Copyright protection automatically applies to original works of authorship fixed in a tangible medium."
+        ];
+        const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+            addMessage(randomResponse, 'assistant');
+        }, 1000);
+    });
+    
+    function addMessage(content, role) {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `message message-${role}`;
+        messageDiv.textContent = content;
+        chatMessages.appendChild(messageDiv);
+        scrollToBottom();
+    }
+    
+    function scrollToBottom() {
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+    
+    // Focus on input
+    chatInput.focus();
+});
+</script>
+{% endblock %}

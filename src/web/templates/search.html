@@ -1,0 +1,158 @@
+{% extends "base.html" %}
+
+{% block title %}Search - Legal RAG Assistant{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h2 class="card-title"><i class="fas fa-search"></i> Search Legal Documents</h2>
+    </div>
+    <div class="card-body">
+        <form id="search-form">
+            <div class="form-group">
+                <input type="text" class="form-control" id="search-query" 
+                       placeholder="Enter legal terms, concepts, or questions..." required>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                <div class="form-group">
+                    <label class="form-label">Jurisdiction</label>
+                    <select class="form-control" id="jurisdiction">
+                        <option value="">Any</option>
+                        <option value="federal">Federal</option>
+                        <option value="state">State</option>
+                        <option value="international">International</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Document Type</label>
+                    <select class="form-control" id="doc-type">
+                        <option value="">Any</option>
+                        <option value="contract">Contract</option>
+                        <option value="case">Case Law</option>
+                        <option value="statute">Statute</option>
+                        <option value="regulation">Regulation</option>
+                    </select>
+                </div>
+            </div>
+            
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-search"></i> Search Documents
+            </button>
+        </form>
+    </div>
+</div>
+
+<div class="card" style="margin-top: 1rem;">
+    <div class="card-header">
+        <h3 class="card-title">Search Results</h3>
+    </div>
+    <div class="card-body">
+        <div id="search-results">
+            <div style="text-align: center; padding: 2rem; color: #64748b;">
+                <i class="fas fa-search" style="font-size: 3rem; margin-bottom: 1rem;"></i>
+                <p>Enter a search query to find legal documents</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const searchForm = document.getElementById('search-form');
+    const searchResults = document.getElementById('search-results');
+    
+    searchForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const query = document.getElementById('search-query').value;
+        const jurisdiction = document.getElementById('jurisdiction').value;
+        const docType = document.getElementById('doc-type').value;
+        
+        if (!query.trim()) return;
+        
+        // Show loading
+        searchResults.innerHTML = `
+            <div style="text-align: center; padding: 2rem;">
+                <i class="fas fa-spinner fa-spin" style="font-size: 2rem;"></i>
+                <p>Searching for "${query}"...</p>
+            </div>
+        `;
+        
+        // Mock search results (in real app, this would be an API call)
+        setTimeout(() => {
+            const mockResults = [
+                {
+                    title: "Contract Law Overview",
+                    source: "contract_guide.pdf",
+                    score: 0.95,
+                    excerpt: "Contract law governs the formation and enforcement of agreements between parties...",
+                    jurisdiction: "federal",
+                    type: "contract"
+                },
+                {
+                    title: "Intellectual Property Rights",
+                    source: "ip_law.docx", 
+                    score: 0.87,
+                    excerpt: "Intellectual property refers to creations of the mind including inventions, literary works...",
+                    jurisdiction: "international",
+                    type: "statute"
+                },
+                {
+                    title: "Case Study: Smith v. Jones",
+                    source: "smith_v_jones.txt",
+                    score: 0.78,
+                    excerpt: "This landmark case established important precedents in contract interpretation...",
+                    jurisdiction: "state",
+                    type: "case"
+                }
+            ];
+            
+            // Filter by selections
+            let filteredResults = mockResults.filter(result => {
+                if (jurisdiction && result.jurisdiction !== jurisdiction) return false;
+                if (docType && result.type !== docType) return false;
+                return true;
+            });
+            
+            // Display results
+            if (filteredResults.length === 0) {
+                searchResults.innerHTML = `
+                    <div style="text-align: center; padding: 2rem; color: #64748b;">
+                        <i class="fas fa-search" style="font-size: 3rem; margin-bottom: 1rem;"></i>
+                        <p>No documents found matching your criteria</p>
+                    </div>
+                `;
+            } else {
+                let resultsHTML = '<div class="document-list">';
+                
+                filteredResults.forEach((result, index) => {
+                    resultsHTML += `
+                        <div class="document-item">
+                            <div class="document-info">
+                                <div class="document-title">
+                                    ${result.title}
+                                    <span class="source-score">${(result.score * 100).toFixed(0)}% match</span>
+                                </div>
+                                <div class="document-meta">
+                                    <span>Source: ${result.source} • 
+                                    Jurisdiction: ${result.jurisdiction} • 
+                                    Type: ${result.type}</span>
+                                </div>
+                                <div class="document-excerpt">
+                                    ${result.excerpt}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                resultsHTML += '</div>';
+                searchResults.innerHTML = resultsHTML;
+            }
+        }, 800);
+    });
+});
+</script>
+{% endblock %}
