@@ -13,11 +13,23 @@ An AI-powered legal document analysis system using Retrieval-Augmented Generatio
 ## 🚀 Quick Start
 
 ```bash
-# 1. Install dependencies
+# 1. Clone the repository
+git clone https://github.com/yourusername/legal-rag-endee.git
+cd legal-rag-endee
+
+# 2. Install dependencies
 pip install -r requirements.txt
 
-# 2. Run the application
+# 3. Run the application
 python app.py
+```
+**Access the Application**
+```bash
+Open your browser and navigate to: http://localhost:5000
+```
+**📊 Expected Outputs & Screenshots**
 
-# 3. Open browser to:
-# http://localhost:5000
+**1️⃣ Home Page (/)**
+```bash
+URL: http://localhost:5000
+```
