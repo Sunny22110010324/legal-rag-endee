@@ -12,6 +12,10 @@
 - **Mock Mode Operation** - No external API dependencies required
 - **Comprehensive Testing Suite** - Validation of all functionality
 - **Production-Ready Code** - Clean architecture with error handling
+
+## 🏗️ Architecture Overview
+<img src="screenshots/architecture.png" alt="Home" height ="300" width="450" style="border-radius: 8px; border: 1px solid #e5e7eb;">
+
 ## 🚀 Quick Start & Demo
 
 ### **📋 Prerequisites**
