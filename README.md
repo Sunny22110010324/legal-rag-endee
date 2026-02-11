@@ -31,9 +31,6 @@ cd legal-rag-endee
 
 # 2. Install dependencies
 pip install -r requirements.txt
-
-# 3. Run the application
-python app.py
 ```
 
 **🌐 Access the Application**
@@ -43,18 +40,54 @@ Once running, open your browser and navigate to:
 ```
 
 **Check the Working of the Use Case**
-Step 1 – Upload a Legal Document
+
+**Step 1 – Upload a Legal Document**
 1. Navigate to the Upload Page
 2. Upload a legal document (PDF or TXT)
 3. Wait for confirmation message:
 ```bash
 Document processed successfully
 ```
-This Confirms:
+**This Confirms:**
 1. Document chunking works
 2. Embeddings are generated
 3. Data stored in Endee Vector DB
 
+**Step 2 – Verify Document Storage**
+
+1. Go to the Documents Page
+2. Ensure the uploaded document appears in the list
+
+**Confirms:**
+
+Vector database storage is successful
+
+**Step 3 – Test Semantic Search**
+
+1. Navigate to the Search Page
+2. Enter a query such as:
+```bash
+   Contract
+```
+3. Click Search
+
+**Expected Behavior:**
+
+1. Relevant document chunks are retrieved
+2. Results are meaning-based (semantic similarity)
+3. Not simple keyword matching
+
+**Running the Test Suite**
+
+To validate backend functionality:
+
+```bash
+python app.py
+```
+**Expected Output:**
+```bash
+All tests passed successfully
+```
 
 **📸 Screenshots & Demonstration**
 
@@ -74,3 +107,16 @@ This Confirms:
 | *Document Processing* | *Database Management* | *Complete System* |
 
 </div>
+
+**🧠Tech Stack**
+
+1. Python
+2. Flask
+
+3. Endee Vector Database
+
+4. Retrieval-Augmented Generation (RAG)
+
+5. HTML, CSS, JavaScript
+
+6. Mock LLM Mode
