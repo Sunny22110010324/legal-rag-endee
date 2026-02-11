@@ -42,6 +42,20 @@ Once running, open your browser and navigate to:
 👉 http://localhost:5000
 ```
 
+**Check the Working of the Use Case**
+Step 1 – Upload a Legal Document
+1. Navigate to the Upload Page
+2. Upload a legal document (PDF or TXT)
+3. Wait for confirmation message:
+```bash
+Document processed successfully
+```
+This Confirms:
+1. Document chunking works
+2. Embeddings are generated
+3. Data stored in Endee Vector DB
+
+
 **📸 Screenshots & Demonstration**
 
 ## 📸 Screenshots & Demonstration
