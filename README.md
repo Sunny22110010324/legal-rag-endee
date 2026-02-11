@@ -1,4 +1,8 @@
 # Legal RAG Assistant with Endee Vector Database
+![Python](https://img.shields.io/badge/Python-3.8+-blue)
+![Flask](https://img.shields.io/badge/Flask-WebApp-green)
+![RAG](https://img.shields.io/badge/Architecture-RAG-orange)
+
 
 ## 🎯 Project Overview
 
